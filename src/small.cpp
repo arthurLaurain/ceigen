@@ -15,6 +15,13 @@ extern "C"
         m.computeInverseWithCheck(inverse, *invertible);
     }
 
+    void computeInverseWithCheck3d(const SCALAR (*mat)[9], SCALAR (*inv)[9], bool *invertible)
+    {
+        Eigen::Map<const Matrix3d> m(*mat);
+        Eigen::Map<Matrix3d> inverse(*inv);
+        m.computeInverseWithCheck(inverse, *invertible);
+    }
+
     void solveSymmetricLinearSystem4d(const SCALAR (*mat)[16], const SCALAR (*b)[4], SCALAR (*x)[4])
     {
         Eigen::Map<const Matrix4d> m(*mat);
