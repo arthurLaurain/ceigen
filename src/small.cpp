@@ -1,5 +1,4 @@
 #include "small.h"
-#include <eigen/Eigen/Dense>
 
 using Matrix3d = Eigen::Matrix<SCALAR, 3, 3>;
 using Vector3d = Eigen::Matrix<SCALAR, 3, 1>;
@@ -21,6 +20,21 @@ extern "C"
         Eigen::Map<Matrix3d> inverse(*inv);
         m.computeInverseWithCheck(inverse, *invertible);
     }
+
+    void computeJacobiSVD(const SCALAR (*M)[9], SCALAR (*U)[9], SCALAR (*S)[9], SCALAR (*V)[9])
+    {
+        Eigen::Map<const Matrix3d> m(*M);
+        Eigen::Map<Matrix3d> u(*U);
+        Eigen::Map<Matrix3d> s(*S);
+        Eigen::Map<Matrix3d> v(*V);
+
+        Eigen::JacobiSVD<Matrix3d> svd(m, Eigen::ComputeFullU | Eigen::ComputeFullV);
+        
+        u = svd.matrixU();
+        v = svd.matrixV();
+        s = svd.singularValues().asDiagonal();
+    }
+
 
     void solveSymmetricLinearSystem4d(const SCALAR (*mat)[16], const SCALAR (*b)[4], SCALAR (*x)[4])
     {

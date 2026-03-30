@@ -16,8 +16,9 @@ pub fn build(b: *std.Build) void {
         .root_module = mod,
     });
 
-    lib.addIncludePath(b.path("lib"));
+    lib.addIncludePath(b.path("lib/eigen"));
     lib.addIncludePath(b.path("include"));
+
     lib.addCSourceFiles(.{
         .root = b.path("src"),
         .files = &.{
@@ -26,6 +27,7 @@ pub fn build(b: *std.Build) void {
             "dense.cpp",
         },
     });
+
     lib.installHeadersDirectory(
         b.path("include"),
         "ceigen",

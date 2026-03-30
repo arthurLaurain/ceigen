@@ -1,6 +1,9 @@
 #pragma once
 
 #include <stdbool.h>
+#include <Eigen/SVD>
+#include <Eigen/Dense>
+
 
 #define SCALAR double
 
@@ -11,6 +14,8 @@ extern "C"
 
     void computeInverseWithCheck4d(const SCALAR (*mat)[16], SCALAR (*inv)[16], bool *invertible);
     void computeInverseWithCheck3d(const SCALAR (*mat)[9], SCALAR (*inv)[9], bool *invertible);
+    void computeJacobiSVD(const SCALAR (*mat)[9], SCALAR (*U)[9], SCALAR (*S)[9], SCALAR (*V)[9]);
+
     void solveSymmetricLinearSystem4d(const SCALAR (*mat)[16], const SCALAR (*b)[4], SCALAR (*x)[4]);
     void eigenSolver3d(const SCALAR (*mat)[9], SCALAR (*eigenvalues)[3], SCALAR (*eigenvectors)[9]);
 
