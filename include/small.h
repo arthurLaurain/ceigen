@@ -1,9 +1,6 @@
 #pragma once
 
 #include <stdbool.h>
-#include <Eigen/SVD>
-#include <Eigen/Dense>
-
 
 #define SCALAR double
 

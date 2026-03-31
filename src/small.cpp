@@ -1,4 +1,6 @@
 #include "small.h"
+#include <eigen/Eigen/Dense>
+#include <eigen/Eigen/SVD>
 
 using Matrix3d = Eigen::Matrix<SCALAR, 3, 3>;
 using Vector3d = Eigen::Matrix<SCALAR, 3, 1>;

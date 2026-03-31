@@ -1,4 +1,5 @@
 #include "sparse.h"
+#include <eigen/Eigen/Sparse>
 
 using SparseMatrix = Eigen::SparseMatrix<SCALAR, Eigen::ColMajor, INDEX>;
 using Vector = Eigen::Matrix<SCALAR, Eigen::Dynamic, 1>;
