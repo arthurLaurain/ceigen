@@ -23,7 +23,22 @@ extern "C"
         m.computeInverseWithCheck(inverse, *invertible);
     }
 
-    void computeJacobiSVD(const SCALAR (*M)[9], SCALAR (*U)[9], SCALAR (*S)[9], SCALAR (*V)[9])
+    // Compute two 3x3 matrices for eigenvectors and eigenvalues.
+    // First matrix is a square matrix where each column is an eigenvector.
+    // Second matrix is diagonal matrix where each element is an eigenvalue.  
+    void computeEigenVectorsAndValues3d(const SCALAR (*mat)[9], SCALAR (*eigenvectors)[9], SCALAR (*eigenvalues)[9])
+    {
+        Eigen::Map<const Matrix3d> m(*mat);
+        Eigen::Map<Matrix3d> vectors(*eigenvectors);
+        Eigen::Map<Matrix3d> values(*eigenvalues);
+        
+        // M is real so we can drop potential imaginary part for eigenvectors and eigenvalues
+        Eigen::EigenSolver<Matrix3d> es(m);
+        vectors = es.eigenvectors().real();
+        values = es.eigenvalues().real().asDiagonal();
+    }
+
+    void computeJacobiSVD3d(const SCALAR (*M)[9], SCALAR (*U)[9], SCALAR (*S)[9], SCALAR (*V)[9])
     {
         Eigen::Map<const Matrix3d> m(*M);
         Eigen::Map<Matrix3d> u(*U);
