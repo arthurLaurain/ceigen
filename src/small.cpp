@@ -26,7 +26,7 @@ extern "C"
     // Compute two 3x3 matrices for eigenvectors and eigenvalues.
     // First matrix is a square matrix where each column is an eigenvector.
     // Second matrix is diagonal matrix where each element is an eigenvalue.  
-    void computeEigenVectorsAndValues3d(const SCALAR (*mat)[9], SCALAR (*eigenvectors)[9], SCALAR (*eigenvalues)[9])
+    void computeEigenValuesAndEigenVectors3d(const SCALAR (*mat)[9], SCALAR (*eigenvectors)[9], SCALAR (*eigenvalues)[9])
     {
         Eigen::Map<const Matrix3d> m(*mat);
         Eigen::Map<Matrix3d> vectors(*eigenvectors);
