@@ -25,17 +25,19 @@ extern "C"
 
     // Compute two 3x3 matrices for eigenvectors and eigenvalues.
     // First matrix is a square matrix where each column is an eigenvector.
-    // Second matrix is diagonal matrix where each element is an eigenvalue.  
+    // Second matrix is diagonal matrix where each element is an eigenvalue.
     void computeEigenValuesAndEigenVectors3d(const SCALAR (*mat)[9], SCALAR (*eigenvectors)[9], SCALAR (*eigenvalues)[9])
     {
         Eigen::Map<const Matrix3d> m(*mat);
         Eigen::Map<Matrix3d> vectors(*eigenvectors);
         Eigen::Map<Matrix3d> values(*eigenvalues);
-        
-        // M is real so we can drop potential imaginary part for eigenvectors and eigenvalues
-        Eigen::EigenSolver<Matrix3d> es(m);
-        vectors = es.eigenvectors().real();
-        values = es.eigenvalues().real().asDiagonal();
+
+        Eigen::SelfAdjointEigenSolver<Matrix3d> es(m);
+
+        vectors = es.eigenvectors();
+
+        Vector3d evals = es.eigenvalues();
+        values = evals.cwiseSqrt().asDiagonal();
     }
 
     void computeJacobiSVD3d(const SCALAR (*M)[9], SCALAR (*U)[9], SCALAR (*S)[9], SCALAR (*V)[9])
@@ -46,12 +48,11 @@ extern "C"
         Eigen::Map<Matrix3d> v(*V);
 
         Eigen::JacobiSVD<Matrix3d> svd(m, Eigen::ComputeFullU | Eigen::ComputeFullV);
-        
+
         u = svd.matrixU();
         v = svd.matrixV();
         s = svd.singularValues().asDiagonal();
     }
-
 
     void solveSymmetricLinearSystem4d(const SCALAR (*mat)[16], const SCALAR (*b)[4], SCALAR (*x)[4])
     {
