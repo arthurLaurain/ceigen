@@ -25,21 +25,26 @@ extern "C"
         m.computeInverseWithCheck(inverse, *invertible);
     }
 
-    // Compute two 2x2 matrices for eigenvectors and eigenvalues.
-    // First matrix is a square matrix where each column is an eigenvector.
-    // Second matrix is diagonal matrix where each element is an eigenvalue.
-    void computeEigenValuesAndEigenVectors2d(const SCALAR (*mat)[4], SCALAR (*eigenvectors)[4], SCALAR (*eigenvalues)[4])
+    void computeLogOnEigenValues2d(const SCALAR (*mat)[4], SCALAR (*out)[4])
     {
+        using Matrix2d = Eigen::Matrix<SCALAR, 2, 2>;
+        using Vector2d = Eigen::Matrix<SCALAR, 2, 1>;
+
         Eigen::Map<const Matrix2d> m(*mat);
-        Eigen::Map<Matrix2d> vectors(*eigenvectors);
-        Eigen::Map<Matrix2d> values(*eigenvalues);
+        Eigen::Map<Matrix2d> r(*out);
 
         Eigen::SelfAdjointEigenSolver<Matrix2d> es(m);
 
-        vectors = es.eigenvectors();
+        Matrix2d U = es.eigenvectors();
+        Vector2d D = es.eigenvalues();
 
-        Vector2d evals = es.eigenvalues();
-        values = evals.cwiseSqrt().asDiagonal();
+        const SCALAR eps = 1e-12;
+        D = D.cwiseMax(eps);
+
+        Vector2d logD = D.array().log();
+
+        r = U * logD.asDiagonal() * U.transpose();
+
     }
 
     // Compute two 3x3 matrices for eigenvectors and eigenvalues.
