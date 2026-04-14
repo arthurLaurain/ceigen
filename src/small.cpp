@@ -2,6 +2,8 @@
 #include <eigen/Eigen/Dense>
 #include <eigen/Eigen/SVD>
 
+using Matrix2d = Eigen::Matrix<SCALAR, 2, 2>;
+using Vector2d = Eigen::Matrix<SCALAR, 2, 1>;
 using Matrix3d = Eigen::Matrix<SCALAR, 3, 3>;
 using Vector3d = Eigen::Matrix<SCALAR, 3, 1>;
 using Matrix4d = Eigen::Matrix<SCALAR, 4, 4>;
@@ -21,6 +23,23 @@ extern "C"
         Eigen::Map<const Matrix3d> m(*mat);
         Eigen::Map<Matrix3d> inverse(*inv);
         m.computeInverseWithCheck(inverse, *invertible);
+    }
+
+    // Compute two 2x2 matrices for eigenvectors and eigenvalues.
+    // First matrix is a square matrix where each column is an eigenvector.
+    // Second matrix is diagonal matrix where each element is an eigenvalue.
+    void computeEigenValuesAndEigenVectors2d(const SCALAR (*mat)[4], SCALAR (*eigenvectors)[4], SCALAR (*eigenvalues)[4])
+    {
+        Eigen::Map<const Matrix2d> m(*mat);
+        Eigen::Map<Matrix2d> vectors(*eigenvectors);
+        Eigen::Map<Matrix2d> values(*eigenvalues);
+
+        Eigen::SelfAdjointEigenSolver<Matrix2d> es(m);
+
+        vectors = es.eigenvectors();
+
+        Vector2d evals = es.eigenvalues();
+        values = evals.cwiseSqrt().asDiagonal();
     }
 
     // Compute two 3x3 matrices for eigenvectors and eigenvalues.
