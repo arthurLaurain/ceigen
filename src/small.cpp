@@ -47,6 +47,23 @@ extern "C"
 
     }
 
+    // Compute two 2x2 matrices for eigenvectors and eigenvalues.
+    // First matrix is a square matrix where each column is an eigenvector.
+    // Second matrix is diagonal matrix where each element is an eigenvalue.
+    void computeEigenValuesAndEigenVectors2d(const SCALAR (*mat)[4], SCALAR (*eigenvectors)[4], SCALAR (*eigenvalues)[4])
+    {
+        Eigen::Map<const Matrix2d> m(*mat);
+        Eigen::Map<Matrix2d> vectors(*eigenvectors);
+        Eigen::Map<Matrix2d> values(*eigenvalues);
+
+        Eigen::SelfAdjointEigenSolver<Matrix2d> es(m);
+
+        vectors = es.eigenvectors();
+
+        Vector2d evals = es.eigenvalues();
+        values = evals.cwiseSqrt().asDiagonal();
+    }
+
     // Compute two 3x3 matrices for eigenvectors and eigenvalues.
     // First matrix is a square matrix where each column is an eigenvector.
     // Second matrix is diagonal matrix where each element is an eigenvalue.
@@ -64,6 +81,20 @@ extern "C"
         
         evals = evals.cwiseMax(0.0);
         values = evals.cwiseSqrt().asDiagonal();
+    }
+
+    void computeJacobiSVD2d(const SCALAR (*M)[4], SCALAR (*U)[4], SCALAR (*S)[4], SCALAR (*V)[4])
+    {
+        Eigen::Map<const Matrix2d> m(*M);
+        Eigen::Map<Matrix2d> u(*U);
+        Eigen::Map<Matrix2d> s(*S);
+        Eigen::Map<Matrix2d> v(*V);
+
+        Eigen::JacobiSVD<Matrix2d> svd(m, Eigen::ComputeFullU | Eigen::ComputeFullV);
+
+        u = svd.matrixU();
+        v = svd.matrixV();
+        s = svd.singularValues().asDiagonal();
     }
 
     void computeJacobiSVD3d(const SCALAR (*M)[9], SCALAR (*U)[9], SCALAR (*S)[9], SCALAR (*V)[9])
