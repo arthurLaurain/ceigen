@@ -61,6 +61,8 @@ extern "C"
         vectors = es.eigenvectors();
 
         Vector3d evals = es.eigenvalues();
+        
+        evals = evals.cwiseMax(0.0);
         values = evals.cwiseSqrt().asDiagonal();
     }
 
