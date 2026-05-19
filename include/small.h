@@ -11,6 +11,7 @@ extern "C"
 
     void computeInverseWithCheck4d(const SCALAR (*mat)[16], SCALAR (*inv)[16], bool *invertible);
     void computeInverseWithCheck3d(const SCALAR (*mat)[9], SCALAR (*inv)[9], bool *invertible);
+    void computeInverseWithCheck2d(const SCALAR (*mat)[4], SCALAR (*inv)[4], bool *invertible);
     void computeJacobiSVD2d(const SCALAR (*mat)[4], SCALAR (*U)[4], SCALAR (*S)[4], SCALAR (*V)[4]);
     void computeJacobiSVD3d(const SCALAR (*mat)[9], SCALAR (*U)[9], SCALAR (*S)[9], SCALAR (*V)[9]);
     void computeLogOnEigenValues2d(const SCALAR (*mat)[4], SCALAR (*out)[4]);
