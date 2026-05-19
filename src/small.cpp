@@ -25,6 +25,13 @@ extern "C"
         m.computeInverseWithCheck(inverse, *invertible);
     }
 
+    void computeInverseWithCheck2d(const SCALAR (*mat)[4], SCALAR (*inv)[4], bool *invertible)
+    {
+        Eigen::Map<const Matrix2d> m(*mat);
+        Eigen::Map<Matrix2d> inverse(*inv);
+        m.computeInverseWithCheck(inverse, *invertible);
+    }
+
     void computeLogOnEigenValues2d(const SCALAR (*mat)[4], SCALAR (*out)[4])
     {
         using Matrix2d = Eigen::Matrix<SCALAR, 2, 2>;
